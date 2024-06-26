@@ -7,9 +7,12 @@ categories: [Machine learning, Quantile regression]
 date: '2024-06-24'
 ---
 
-여러 작업에 치여살던 중 갑자기 잠들기전에 생각이 났다. LightGBM에서도 가능하면, 비슷한 tree 모델인 XGBoost에서도 quantile regression이 가능하지 않을까?
+### TL;DR
+이번 글에서는 XGBoost에도 Monotone quantile regressor를 만드는 과정을 소개한다. 엄청나게 LightGBM에 적용한 방식과 유사하지만..
+고로, 자세한 설명은 [lightGBM 글](../mqr-lgb)를 봐주시면 되겠다. 코드는 [RektPunk/xgboost-monotone-quantile](https://github.com/RektPunk/xgboost-monotone-quantile/)에 작성해두었다.
 
-졸린 눈을 한 채로 검색해보니 오? 비슷하게 `monotone_constraints` 라는게 존재하고 `tuple`로 처리한다는 점만 다르다. 심지어 Custom objective function도 grad, hess를 반환하도록 구성하면 된다는 것도 확인했다. 이전 [lightGBM 글](../mqr-lgb)에서 아주 살짝만 바꾸면 끝날거 같아서 시작했다. 고로, 자세한 설명은 [lightGBM 글](../mqr-lgb)를 봐주시면 되겠다. 코드는 [RektPunk/xgboost-monotone-quantile](https://github.com/RektPunk/xgboost-monotone-quantile/)에 작성해두었다.
+### How?
+여러 작업에 치여살던 중 갑자기 잠들기전에 생각이 났다. LightGBM에서도 가능하면, 비슷한 tree 모델인 XGBoost에서도 quantile regression이 가능하지 않을까? 졸린 눈을 한 채로 검색해보니 오? 비슷하게 `monotone_constraints` 라는게 존재하고 `tuple`로 처리한다는 점만 다르다. 심지어 Custom objective function도 grad, hess를 반환하도록 구성하면 된다는 것도 확인했다. 이전 [lightGBM 글](../mqr-lgb)에서 아주 살짝만 바꾸면 끝날거 같아서 시작했다. 
 
 ```python
 # module/model.py
@@ -94,6 +97,8 @@ class MonotonicQuantileRegressor:
 바뀐 부분은 단순하게 `DMatrix`로 데이터 변형해주고, `monotone_constraints`를 tuple로 변경해준 것 밖에..?
 마침 `DMatrix`도 `get_label()` 사용할 수 있길래 옳다구나 하고 슈슉 만들었다.
 
+### Experiment
+
 자, 이제 동작만 테스트 해보자.
 ```python
 import numpy as np
@@ -129,7 +134,9 @@ if __name__ == "__main__":
         fig.add_trace(go.Scatter(x=x_test, y=_pred, mode="lines"))
     fig.show()
 ```
-
+![](../assets/img/qr/5_1.png)
 생각했던 것보다 잘 동작해서 너무 놀랐다. ~~이게 왜 돼?~~ 물론 성능은 언제나 그렇듯 신경쓰지 않지만..
 
+
+### Conclusion
 여러 유저가 crossing 문제로 고통받고 있는데 Issue에는 누가 질문해도 close하길래 [XGBoost discuss 페이지](https://discuss.xgboost.ai/t/multiple-quantile-regression-with-preserving-monotonicity-non-crossing-condition/3655)에 올려뒀다. 

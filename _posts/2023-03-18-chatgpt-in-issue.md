@@ -7,6 +7,7 @@ categories: [Machine learning, chatGPT]
 date: '2023-03-18'
 ---
 
+### TL;DR
 openAI API Free trial이 써도써도 끝나지 않는다.
 그래서 너무 한가하기도 하고 오기도 생기고 한 나머지 만들어봤다.
 이름하여, Github issue QnA bot!
@@ -16,7 +17,7 @@ openAI API Free trial이 써도써도 끝나지 않는다.
 생각보다 삽질을 많이 한것 같다.
 이 문서는 진행하면서 겪었던 삽질들을 제외하고 동작에 필요한 내용만 정리했다. 물론 모든 코드는 [RektPunk/chatGPT-IssueAide](https://github.com/RektPunk/chatGPT-IssueAide)에 있으며 핵심적인 부분만 소개한다.
 
-### Get chatGPT response with openai
+### Get response from openai
 해당 부분은 이미 수많은 사람들이 만들어둔 코드가 많아서 엄청나게 수월하게 작성했다.
 먼저, `openai` 모듈을 설치하고 아래처럼 코드를 작성했다.
 
@@ -141,7 +142,7 @@ Github issue 가 대답하도록 했다.
 근데.. "맞아."는 좀 건방진 것 같다. 그러므로.. 당분간 괴롭혀줄 예정이다. 
 
 
-### 끝맺음
+### Conclusion
 
 사실 굳이 Github issue에 QnA 봇을 만들 필요는 없다.
 하지만 재미있으면.. 그만이다..
