@@ -9,7 +9,7 @@ date: '2024-06-24'
 
 ### TL;DR
 이번 글에서는 XGBoost에도 Monotone quantile regressor를 만드는 과정을 소개한다. 엄청나게 LightGBM에 적용한 방식과 유사하지만..
-고로, 자세한 설명은 [lightGBM 글](../mqr-lgb)를 봐주시면 되겠다. 코드는 [RektPunk/monotone-quantile-tree](https://github.com/RektPunk/monotone-quantile-tree)에 작성해두었다.
+고로, 자세한 설명은 [lightGBM 글](../mqr-lgb)를 봐주시면 되겠다. 코드는 [RektPunk/quantile-tree](https://github.com/RektPunk/quantile-tree)에 작성해두었다.
 
 ### How?
 여러 작업에 치여살던 중 갑자기 잠들기전에 생각이 났다. LightGBM에서도 가능하면, 비슷한 tree 모델인 XGBoost에서도 quantile regression이 가능하지 않을까? 졸린 눈을 한 채로 검색해보니 오? 비슷하게 `monotone_constraints` 라는게 존재하고 `tuple`로 처리한다는 점만 다르다. 심지어 Custom objective function도 grad, hess를 반환하도록 구성하면 된다는 것도 확인했다. 또 dataset을 `xgb.DMatrix`로 쓰면 된다는 사소한 차이점까지 확인했다. 결론은 이전 [lightGBM 글](../mqr-lgb)에서 아주 살짝만 바꾸면 끝날거 같아서 시작했다. 
