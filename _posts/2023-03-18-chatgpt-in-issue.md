@@ -1,9 +1,9 @@
 ---
 layout: post
-title: ChatGPT를 Github issue에서 써보자
-description: Github action을 활용해서 issue탭에서 chatGPT가 동작하도록 해보자.
+title: ChatGPT를 Github issue에서 사용해보기
+description: Github action을 활용한 issue탭에서의 chatGPT 동작
 tags: 'chatGPT github'
-categories: [tools github]
+categories: [Development, Github]
 date: '2023-03-18'
 ---
 

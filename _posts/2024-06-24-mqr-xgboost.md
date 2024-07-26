@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Multiple quantile regression with XGBoost
-description: XGBoost으로 Multiple Quantiles 을 추정하며 crossing problem을 방지하는 방법을 알아보자.
+description: XGBoost으로 Multiple Quantiles 을 추정하며 crossing problem을 방지하는 방법
 tags: 'Quantile-regression XGBoost'
 categories: [Machine learning, Quantile regression]
 date: '2024-06-24'

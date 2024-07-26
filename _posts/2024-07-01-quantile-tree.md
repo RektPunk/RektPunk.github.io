@@ -1,6 +1,6 @@
 ---
 layout: post
-title: quantile-tree; Quantile estimator preserving monotonicity among quantiles
+title: MQBoost; Quantile estimator preserving monotonicity among quantiles
 description: LightGBM, XGBoost 기반의 quantile regressor 패키지 생성
 tags: 'Quantile-regression LightGBM XGBoost'
 categories: [Machine learning, Quantile regression]
@@ -9,10 +9,10 @@ date: '2024-07-01'
 
 ### TL;DR
 이번 글에서는 앞선 두 모델 [LightGBM 글](../mqr-lgb), [XGBoost 글](../mqr-xgboost)을 하나로 묶어 패키지화 한 내용을 다룬다.
-코드는 [RektPunk/quantile-tree](https://github.com/RektPunk/quantile-tree)에 작성해두었다.
+코드는 [RektPunk/mqboost](https://github.com/RektPunk/mqboost)에 작성해두었다.
 
 ### How?
-두 모델은 서로 많은 것을 공유한다. Data 준비하는 과정 [(`utils.py`)](https://github.com/RektPunk/quantile-tree/blob/main/quantile_tree/utils.py), objective function [(`objective.py`)](https://github.com/RektPunk/quantile-tree/blob/main/quantile_tree/objective.py)은 완벽하게 같고, constraints 할당하는 방법, train 과정이 미묘하게 다르다. 그래서 고민 끝에 먼저 [`abtract.py`](https://github.com/RektPunk/quantile-tree/blob/main/quantile_tree/abstract.py)에 먼저 parent class를 만들어서 `_model_name` 이라는 입력을 받도록 했다. `_model_name`은 enum 처리로 "lightgbm", "xgboost" 중 하나를 입력으로 받도록 했다.
+두 모델은 서로 많은 것을 공유한다. Data 준비하는 과정 [(`utils.py`)](https://github.com/RektPunk/mqboost/blob/main/mqboost/utils.py), objective function [(`objective.py`)](https://github.com/RektPunk/mqboost/blob/main/mqboost/objective.py)은 완벽하게 같고, constraints 할당하는 방법, train 과정이 미묘하게 다르다. 그래서 고민 끝에 먼저 [`abtract.py`](https://github.com/RektPunk/mqboost/blob/main/mqboost/abstract.py)에 먼저 parent class를 만들어서 `_model_name` 이라는 입력을 받도록 했다. `_model_name`은 enum 처리로 "lightgbm", "xgboost" 중 하나를 입력으로 받도록 했다.
 
 
 ```python
@@ -184,6 +184,45 @@ twine upload dist/*
 [pip 링크](https://pypi.org/project/quantile-tree/)에 업로드 확인하고 설치까지 확인하면 완료!
 ```bash
 pip install quantile-tree
+```
+
+마지막으로 직접 배포는 귀찮으니 github action을 통해 태그를 push하면 배포하도록 구성했다.
+```yaml
+name: Publish Python Package
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+      python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+
+    - name: Build package
+      run: |
+        python setup.py sdist bdist_wheel
+
+    - name: Publish to PyPI
+      env:
+      TWINE_USERNAME: __token__
+      TWINE_PASSWORD: ${ { secrets.PYPI_TOKEN } }
+      run: |
+        twine upload dist/*
 ```
 
 ### Conclusion
