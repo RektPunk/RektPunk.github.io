@@ -1,7 +1,7 @@
 ---
 layout: post
 title: MQBoost; Quantile estimator preserving monotonicity among quantiles
-description: LightGBM, XGBoost 기반의 quantile regressor 패키지 생성
+description: LightGBM, XGBoost 기반의 quantile regressor 패키지 개발
 tags: 'Quantile-regression LightGBM XGBoost'
 categories: [Machine learning, Quantile regression]
 date: '2024-07-01'
@@ -227,3 +227,7 @@ jobs:
 
 ### Conclusion
 1년전..?에 생각해서 만들어둔 로직인데 최근까지도 비슷한 방법론이나 paper을 찾아보기 어려운 것 같다. 때때로 흥미가 생기면 다른 tree 알고리즘도 구경하면서 적용가능하면 찾아서 업데이트할 계획이다.
+
+### Update
+- 목적함수를 변경했다. MM 알고리즘에 사용되는 Approximated huber loss이다. 얘가 성능이 더 괜찮다고 한다.
+- Publish 로직을 poetry 도입으로 변경했다.
